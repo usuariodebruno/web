@@ -1,0 +1,14 @@
+<h2>Produtos da categoria: {{ categoria.nome }}</h2>
+
+{% if produtos %}
+  <ul>
+    {% for produto in produtos %}
+      <li>{{ produto.nome }}</li>
+    {% empty %}
+      <li>Nenhum produto encontrado.</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Nenhum produto disponível para esta categoria.</p>
+{% endif %}
+<a href="{% url 'escambo:index'%}">Voltar</a>

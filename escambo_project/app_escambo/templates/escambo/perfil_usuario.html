@@ -1,0 +1,47 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil do Usuário</title>  
+  {% bootstrap_css %}
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card mt-5">
+          <div class="card-body">
+            <h3 class="card-title">Informações do Usuário</h3>
+            <hr>
+            <div class="form-group">
+              <label for="username">Nome de Usuário:</label>
+              <p>{{ usuario.user.username }}</p>
+            </div>
+            <div class="form-group">
+              <label for="cpf">CPF:</label>
+              <p>{{ usuario.cpf }}</p>
+            </div>
+            <div class="form-group">
+              <label for="endereco">Endereço:</label>
+              <p>{{ usuario.endereco }}</p>
+            </div>
+            <div class="form-group">
+              <label for="telefone">Telefone:</label>
+              <p>{{ usuario.telefone }}</p>
+            </div>
+            {% if usuario.foto %}
+              <div class="form-group">
+                <label for="foto">Foto:</label>
+                <img src="{{ usuario.foto.url }}" alt="Foto do Usuário" class="img-fluid">
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% bootstrap_javascript %}
+</body>
+</html>

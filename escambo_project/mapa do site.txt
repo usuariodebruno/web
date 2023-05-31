@@ -1,0 +1,21 @@
+- Página inicial
+  - Login
+    - Perfil do usuário
+      - Editar perfil
+      - Meus produtos (CRUD)
+        - Publicar item 
+        - Editar produto
+        - Excluir produto
+      - Minhas trocas
+        - Ver detalhes do escambo
+        - Confirmar escambo (Escambar)
+        - Avaliar escambador
+  - Cadastro
+  - Categoria 1
+  - Categoria 2
+  - Categoria 3
+  - Categoria 4
+- Pesquisar produtos
+- Ver detalhes do produto
+  - Chat de escambo
+
