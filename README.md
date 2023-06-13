@@ -1,6 +1,6 @@
 # Plataforma Escambo
 
-<img src="logo.png" width="200" height="200" />
+<img src="logo.png" width="400" height="400" />
 
 Escambo é uma plataforma online que permite a troca de vestuário com afeto, como roupas, sapatos e acessórios, entre os usuários. As pessoas podem oferecer suas peças de vestuário em troca de outras que desejam adquirir, sem a necessidade de usar dinheiro como intermediário. Plataforma Escambo e práticas como essas, incentivam conexões humanas, fortalecem os laços sociais, incentivam a sustentabilidade e promovendo uma sensação de comunidade e pertencimento. É uma forma emocionalmente enriquecedora e socialmente consciente de renovar o guarda-roupa de forma econômica e sustentável.
 

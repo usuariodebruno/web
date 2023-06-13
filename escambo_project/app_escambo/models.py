@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Usuario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)      
-    cpf = models.CharField(max_length=14)
+    cpf = models.CharField(max_length=14)          
     endereco = models.CharField(max_length=255)
     telefone = models.CharField(max_length=20)
     foto = models.ImageField(upload_to='usuario_fotos/', null=True, blank=True)
