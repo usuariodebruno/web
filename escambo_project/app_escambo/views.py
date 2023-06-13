@@ -12,13 +12,13 @@ import random
 
 # Create your views here.
 def index(request):
-    produtos = Produto.objects.all() 
+    produtos = Produto.objects.all().order_by('-id')[:3] 
     categorias = Categoria.objects.all() 
     usuarios = Usuario.objects.all()  
 
     template = loader.get_template('escambo/index.html')
     context = { 
-        'produtos': reversed(produtos),
+        'produtos': produtos,
         'categorias': categorias,
         'usuarios': usuarios,
     }  
