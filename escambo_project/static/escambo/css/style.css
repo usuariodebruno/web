@@ -1,0 +1,388 @@
+body {
+  background-color: #EDEACA ;
+}
+
+.slogan {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button#buscar {
+  background-color: #2B93AD;
+}
+
+.slogan > img {
+  max-width: 100%;
+}
+
+.small_nav {  
+  background: #2B93AD;
+}
+.itens {
+  display: flex;
+  justify-content: flex-end;
+  align-items: right ;  
+  background: #2B93AD;
+}
+
+nav.a {
+  font-size: 14px;
+  color: black;
+}
+
+ul.a {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+li.a {
+  margin: 0.1em;
+  margin-left: 1em;
+  color: whitesmoke;
+}
+
+li.a:hover {
+  text-decoration: underline
+}
+
+/* PESQUISAR */
+
+.form-control-borderless {
+  border: none;
+}
+
+.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+
+
+/* PRODUTOS */
+.product-item {
+  padding: 10px;
+}
+
+.product-item .product-container {
+  text-align: left;
+  font: normal 14px sans-serif;
+  background-color: #EDEACA;
+  border: 1px solid #EDEACA;
+  border-radius: 3px;
+  box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+}
+
+.product-item a.product-image {
+  display: block;
+  text-align: center;
+  box-shadow: 0 0 20px 8px #EDEACA inset;
+  width: 100%;
+  margin-bottom: 25px;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+.product-item a.product-image img {
+  height: 130px;
+}
+
+.product-item h2 {
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  font-weight: 800;
+}
+
+.product-item h2 a {
+  text-decoration: none;
+  color: #2b2b2b;
+}
+
+.product-item a.small-text {
+  color: #808080;
+  text-decoration: none;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  display: block;
+  text-align: right;
+  font-size: 12px;
+}
+
+.product-item .product-rating {
+  color: #f09911;
+  font-size: 14px;
+}
+
+.product-item .product-rating a.small-text {
+  text-align: left;
+  margin: 0 0 0 10px;
+  display: inline-block;
+}
+
+.product-item p.product-description {
+  margin-top: 20px;
+  color: #5d5d5d;
+  line-height: 1.45;
+  white-space: normal;
+  margin-bottom: 20px;
+  
+  
+  text-align: justify;
+}
+
+#buscar {  
+  border-radius: 1em;
+}
+
+.product-item button {
+  border-radius: 2px;
+  background: #2B93AD;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+  border: 0;
+  border-radius: 1em;
+  color: whitesmoke;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 8px 20px;
+}
+
+.product-item button:active {
+  background: #87bae1;
+  color: #fff;
+  border: 0;
+}
+
+.product-item button:focus {
+  background: #87bae1;
+  outline: none;
+  color: #fff;
+}
+
+.product-item button:hover {
+  background: #66ABE0;
+  color: #fff;
+}
+
+.product-item button:focus:active {
+  background: #87bae1;
+  outline: none;
+  color: #fff;
+}
+
+.product-item .product-price {
+  color: #4e4e4e;
+  font-weight: bold;
+  font-size: 20px;
+  padding-top: 5px;
+  text-align: right;
+}
+
+/* Animações para os elementos SVG */
+svg:hover #brincos_tras, #brincos,
+#de_cima, #cab_de_cima,
+#Chinelo, #cab_chinelo,
+#cab_vestido, #Vestido {
+  -webkit-animation: spring 0.15s ease-in-out alternate infinite;
+          animation: spring 0.15s ease-in-out alternate infinite;
+}
+
+svg:hover #brincos_tras, #brincos,
+#de_cima, #cab_de_cima,
+#Chinelo, #cab_chinelo,
+#cab_vestido, #Vestido {
+  -webkit-animation: sock 0.50s ease-in-out alternate infinite;
+          animation: sock 0.50s ease-in-out alternate infinite;
+}
+
+@keyframes spring {
+  from {
+    transform: scale(0.2, 0.50);
+  }
+  to {
+    transform: scale(0.2, 0.50);
+  }
+}
+
+@-webkit-keyframes sock {
+  from {
+    transform: rotate(4) translateY(15);
+  }
+  to {
+    transform: rotate(0.2deg) translateY(-0);
+  }
+}
+
+@keyframes sock {
+  from {
+    transform: rotate(4) translateY(15);
+  }
+  to {
+    transform: rotate(0.2deg) translateY(0px);
+  }
+}
+
+/* VARAL SGV COLOR */
+.cls-1 {
+  fill: #febd00;
+}
+
+.cls-2 {
+  fill: #fefefe;
+}
+
+.cls-3 {
+  fill: #f4475e;
+}
+
+.cls-4 {
+  fill: #f55267;
+}
+
+.cls-5 {
+  fill: #f9a2ad;
+}
+
+.cls-6 {
+  fill: #fe6e7f;
+}
+
+.cls-7 {
+  fill: #f7e778;
+}
+
+.cls-8 {
+  fill: #e42740;
+}
+
+.cls-9 {
+  fill: #fedb55;
+}
+
+.cls-10 {
+  fill: #00d69c;
+}
+
+.cls-11 {
+  fill: #00a37f;
+}
+
+.cls-12 {
+  fill: #fee5b3;
+}
+
+.cls-13 {
+  fill: #010101;
+}
+
+.cls-14 {
+  fill: #767676;
+}
+
+.cls-15 {
+  fill: #fbfbfb;
+}
+
+.cls-16 {
+  fill: #f9f9f9;
+}
+
+.cls-17 {
+  fill: #fda85c;
+}
+
+.cls-18 {
+  fill: #fd5693;
+}
+
+.cls-19 {
+  fill: #febde6;
+}
+
+.cls-20 {
+  fill: #6d7f88;
+}
+
+.cls-21 {
+  fill: #bc80e0;
+}
+
+.cls-22 {
+  fill: #7a8b97;
+}
+
+.cls-23 {
+  fill: #ae66d9;
+}
+
+.cls-24 {
+  fill: #fd9638;
+}
+
+.cls-25 {
+  fill: #fc3581;
+}
+
+.cls-26 {
+  fill: #fda95c;
+}
+
+.cls-27 {
+  fill: #fd9738;
+}
+
+.cls-28 {
+  fill: #fc3681;
+}
+
+.cls-29 {
+  fill: #fc3680;
+}
+
+.cls-30 {
+  fill: #fd5990;
+}
+
+.cls-31 {
+  fill: #fdade0;
+}
+
+.cls-32 {
+  fill: #f0afd7;
+}
+
+.cls-33 {
+  fill: #fc5792;
+}
+
+.cls-34 {
+  fill: #fca85c;
+}
+
+.cls-35 {
+  fill: #bc7fe0;
+}
+
+.cls-36 {
+  fill: #fc3880;
+}
+
+.cls-37 {
+  fill: #fc458b;
+}
+
+.cls-38 {
+  fill: #fe5f7a;
+}
+
+.cls-39 {
+  fill: #fe7e91;
+}

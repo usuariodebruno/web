@@ -12,7 +12,7 @@ import random
 
 # Create your views here.
 def index(request):
-    produtos = Produto.objects.all().order_by('-id')[:3] 
+    produtos = Produto.objects.all().order_by('-id')
     categorias = Categoria.objects.all() 
     usuarios = Usuario.objects.all()  
 
