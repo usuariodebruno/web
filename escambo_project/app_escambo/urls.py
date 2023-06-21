@@ -13,13 +13,8 @@ urlpatterns = [
     path('pesquisar/', views.pesquisar_produtos, name='pesquisar_produtos'),
     path('categoria/<int:categoria_id>/', views.pesquisar_por_categoria, name='pesquisar_por_categoria'),
 
-    # URL de login
-    path('login/', auth_views.LoginView.as_view(template_name='escambo/login.html'), name='login'),
-    path('autenticado/', views.login_view, name='autenticado'),
-
-    # URL de logout
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-
-    
+ 
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

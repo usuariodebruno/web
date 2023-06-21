@@ -10,7 +10,6 @@ from .models import Produto,Categoria, Escambador
 
 import random
 
-# Create your views here.
 def index(request):
     produtos = Produto.objects.all().order_by('-id')
     categorias = Categoria.objects.all() 
@@ -19,7 +18,8 @@ def index(request):
     context = { 
         'produtos': produtos,
         'categorias': categorias,
-    }  
+    }
+
     return HttpResponse(template.render(context, request))
 
 def cadastro(request):
@@ -80,16 +80,16 @@ def login_view(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
+
             if user is not None:
                 login(request, user)
-                return redirect('perfil_usuario')  # Redirecionar para a página do perfil do usuário após o login
+                return index(request)
             else:
                 messages.error(request, 'Credenciais inválidas. Por favor, tente novamente.')
     else:
         form = LoginForm()
-    
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'escambo/login.html', {'form': form})
 
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return index(request)

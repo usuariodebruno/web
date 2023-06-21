@@ -19,22 +19,48 @@
     <body>
         <!-- CABEÇALHO-->
         <header>
-            <!-- SMALL NAV-->
-            <div class="small_nav">
-                <div class="container">
-                    <div class="itens">
-                        <div class="row">
-                            <nav class="a">
-                                <ul class="a">
-                                    <li class="a"><small>Ajuda</small></li>
-                                    <a href="{% url 'escambo:cadastro'%}"><li class="a"><small>Cadastre-se</small></li></a>
-                                    <a href="{% url 'escambo:login'%}"><li class="a"><small>Login</small></li></a>
-                                </ul>
-                            </nav>
+
+            {% if user.is_authenticated %}
+                <!-- Conteúdo visível apenas para usuários autenticados -->
+                <!-- SMALL NAV-->
+                <p>Bem-vindo, {{ user.username }}!</p> 
+                <div class="small_nav">
+                    <div class="container">
+                        <div class="itens">
+                            <div class="row">
+                                <nav class="a">
+                                    <ul class="a">
+                                        <li class="a"><small>Ajuda</small></li>                                    
+                                        <li class="a"><small>Meus Produtos</small></li>
+                                        <li class="a"><small>Meus Escambos</small></li>
+                                        <a href="{% url 'escambo:cadastro'%}"><li class="a"><small>Conta</small></li></a>
+                                        <a href="{% url 'escambo:logout' %}"><li class="a"><small>Sair</small></li></a>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% else %}
+                 <!-- SMALL NAV-->
+                <div class="small_nav">
+                    <div class="container">
+                        <div class="itens">
+                            <div class="row">
+                                <nav class="a">
+                                    <ul class="a">
+                                        <li class="a"><small>Ajuda</small></li>
+                                        <a href="{% url 'escambo:cadastro'%}"><li class="a"><small>Cadastre-se</small></li></a>
+                                        <a href="{% url 'escambo:login'%}"><li class="a"><small>Login</small></li></a>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}          
+           
 
             {% block categorias %}
             <!-- NAV VARAL -->
