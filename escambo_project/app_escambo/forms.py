@@ -27,7 +27,6 @@ class CadastroForm(forms.Form):
     endereco = forms.CharField(max_length=255)
     telefone = forms.CharField(max_length=20, required=False)
     foto = forms.ImageField(required=False)
-    termos = forms.BooleanField(required=False)
 
     def clean(self):
         cleaned_data = super().clean()

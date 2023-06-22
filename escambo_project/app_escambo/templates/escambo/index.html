@@ -19,48 +19,45 @@
     <body>
         <!-- CABEÇALHO-->
         <header>
-
-            {% if user.is_authenticated %}
-                <!-- Conteúdo visível apenas para usuários autenticados -->
-                <!-- SMALL NAV-->
-                <p>Bem-vindo, {{ user.username }}!</p> 
-                <div class="small_nav">
-                    <div class="container">
-                        <div class="itens">
-                            <div class="row">
-                                <nav class="a">
-                                    <ul class="a">
-                                        <li class="a"><small>Ajuda</small></li>                                    
-                                        <li class="a"><small>Meus Produtos</small></li>
-                                        <li class="a"><small>Meus Escambos</small></li>
-                                        <a href="{% url 'escambo:cadastro'%}"><li class="a"><small>Conta</small></li></a>
-                                        <a href="{% url 'escambo:logout' %}"><li class="a"><small>Sair</small></li></a>
-                                    </ul>
-                                </nav>
-                            </div>
+            <!-- SMALL NAV-->
+            {% if user.is_authenticated %}                
+            <!-- AUTENTICADO--> 
+            <div class="small_nav">
+                <div class="container">
+                    <div class="itens">
+                        <div class="row">
+                            <nav class="a">
+                                <ul class="a">
+                                    <li style="color: white;"><small>bem-vindo, {{ user.username }}</small></li> 
+                                    <li class="a"><small>Ajuda</small></li>                                    
+                                    <li class="a"><small>Meus Produtos</small></li>
+                                    <li class="a"><small>Meus Escambos</small></li>
+                                    <a href="{% url 'escambo:cadastro'%}"><li class="a"><small>Conta</small></li></a>
+                                    <a href="{% url 'escambo:logout' %}"><li class="a"><small>Sair</small></li></a>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
-            {% else %}
-                 <!-- SMALL NAV-->
-                <div class="small_nav">
-                    <div class="container">
-                        <div class="itens">
-                            <div class="row">
-                                <nav class="a">
-                                    <ul class="a">
-                                        <li class="a"><small>Ajuda</small></li>
-                                        <a href="{% url 'escambo:cadastro'%}"><li class="a"><small>Cadastre-se</small></li></a>
-                                        <a href="{% url 'escambo:login'%}"><li class="a"><small>Login</small></li></a>
-                                    </ul>
-                                </nav>
-                            </div>
+            </div>
+            {% else %}            
+            <!-- NÃO AUTENTICADO-->
+            <div class="small_nav">
+                <div class="container">
+                    <div class="itens">
+                        <div class="row">
+                            <nav class="a">
+                                <ul class="a">
+                                    <li class="a"><small>Ajuda</small></li>
+                                    <a href="{% url 'escambo:cadastro'%}"><li class="a"><small>Cadastre-se</small></li></a>
+                                    <a href="{% url 'escambo:login'%}"><li class="a"><small>Login</small></li></a>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
-
-            {% endif %}          
-           
+            </div>
+            {% endif %}  
 
             {% block categorias %}
             <!-- NAV VARAL -->
@@ -486,95 +483,8 @@
         </div>
 
         {% if produtos %}
-            <!-- Linha 1 - DESTAQUE -->
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3 col-lg-12">
-                        <div class="row product-list">
-                            <div class="col-sm-6 col-md-4 col-lg-12 product-item">
-                                <div class="product-container">
-                                    <div class="row">
-                                        <img src="{% static 'escambo/img/estrela_destaque.png' %}" width="30" height="30" /> 
-                                        <label>DESTAQUE</label>
-                                        <div class="col-md-12"><a class="product-image" href="#">
-                                                <img src="{% static 'escambo/img/iphone6.jpg' %}"></a>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h2><a href="#">iPhone 6s</a></h2>
-                                        </div>
-                                        <div class="col-4"><a class="small-text" href="#">CATEGORIA </a></div>
-                                    </div>
-                                    <div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i
-                                            class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i><a
-                                            class="small-text" href="#">82 reviews</a></div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <p class="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing
-                                                elit. Nam ornare sem sed nisl dignissim, facilisis dapibus lacus vulputate. Sed
-                                                lacinia lacinia magna. </p>
-                                            <div class="row">
-                                                <div class="col-6"><button class="btn btn-light" type="button">Escambar</button>
-                                                </div>                                        
-                                                <div class="col-6">
-                                                    <!--<p class="product-price">$599.00 </p> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Linha 2 - 2 itens-->
-            <div class="container">
-                <div class="row">
-                    {% for p in produtos|slice:":4"%}
-                    <div class="col-md-6">
-                        <div class="row product-list">
-                            <div class="col-sm-6 col-md-4 col-lg-12 product-item">
-                                <div class="product-container">
-                                    <div class="row">
-                                        <div class="col-md-12"><a class="product-image" href="#"><img
-                                                    src="{% static 'escambo/img/iphone6.jpg' %}"></a></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h2><a href="#">{{ p.nome }}</a></h2>
-                                        </div>
-                                        <div class="col-4"><a class="small-text" href="#"> {{ p.categoria }} </a></div>
-                                    </div>
-                                    <div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i
-                                            class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i><a
-                                            class="small-text" href="#">82 reviews - {{ p.usuario_proprietario }}</a></div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <p class="product-description"> {{ p.descricao_afetiva|truncatechars:250 }}</p>
-                                            <div class="row">
-                                                <div class="col-6"><button class="btn btn-success"
-                                                        type="button">Escambar</button>
-                                                </div>
-                                                <div class="col-6">
-                                                    <!--<p class="product-price">$599.00 </p> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- Linha 3 - 1 DESTAQUE -->
-            <div class="container">
+        <!-- Linha 1 - DESTAQUE -->
+        <div class="container">
             <div class="row">
                 <div class="col-md-3 col-lg-12">
                     <div class="row product-list">
@@ -591,7 +501,7 @@
                                     <div class="col-8">
                                         <h2><a href="#">iPhone 6s</a></h2>
                                     </div>
-                                    <div class="col-4"><a class="small-text" href="#">compare </a></div>
+                                    <div class="col-4"><a class="small-text" href="#">CATEGORIA </a></div>
                                 </div>
                                 <div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i
                                         class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i><a
@@ -616,38 +526,38 @@
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
 
-            <!-- Linha 4 - 4 itens-->
-            <div class="container">
-                <div class="row">
-                    {% for p in produtos|slice:"4:12"%}
-                    <div class="col-md-3">
-                        <div class="row product-list">
-                            <div class="col-sm-6 col-md-4 col-lg-12 product-item">
-                                <div class="product-container">
-                                    <div class="row">
-                                        <div class="col-md-12"><a class="product-image" href="#"><img
-                                                    src="{% static 'escambo/img/iphone6.jpg' %}"></a></div>
+        <!-- Linha 2 - 2 itens-->
+        <div class="container">
+            <div class="row">
+                {% for p in produtos|slice:":4"%}
+                <div class="col-md-6">
+                    <div class="row product-list">
+                        <div class="col-sm-6 col-md-4 col-lg-12 product-item">
+                            <div class="product-container">
+                                <div class="row">
+                                    <div class="col-md-12"><a class="product-image" href="#"><img
+                                                src="{% static 'escambo/img/iphone6.jpg' %}"></a></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h2><a href="#">{{ p.nome }}</a></h2>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <h2><a href="#">{{ p.nome }}</a></h2>
-                                        </div>
-                                    </div>
-                                    <div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i
-                                            class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i><a
-                                            class="small-text" href="#">{{ p.usuario_proprietario|truncatechars:15 }}</a></div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <p class="product-description">{{ p.descricao|truncatechars:100 }}</p>
-                                            <div class="row">
-                                                <div class="col-6"><button class="btn btn-light" type="button">Escambar</button>
-                                                </div>
-                                                <div class="col-6">
-                                                    <!--<p class="product-price">$599.00 </p> -->
-
-                                                </div>
+                                    <div class="col-4"><a class="small-text" href="#"> {{ p.categoria }} </a></div>
+                                </div>
+                                <div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                        class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i><a
+                                        class="small-text" href="#">82 reviews - {{ p.usuario_proprietario }}</a></div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="product-description"> {{ p.descricao_afetiva|truncatechars:250 }}</p>
+                                        <div class="row">
+                                            <div class="col-6"><button class="btn btn-success"
+                                                    type="button">Escambar</button>
+                                            </div>
+                                            <div class="col-6">
+                                                <!--<p class="product-price">$599.00 </p> -->
                                             </div>
                                         </div>
                                     </div>
@@ -655,10 +565,98 @@
                             </div>
                         </div>
                     </div>
-                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Linha 3 - 1 DESTAQUE -->
+        <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-lg-12">
+                <div class="row product-list">
+                    <div class="col-sm-6 col-md-4 col-lg-12 product-item">
+                        <div class="product-container">
+                            <div class="row">
+                                <img src="{% static 'escambo/img/estrela_destaque.png' %}" width="30" height="30" /> 
+                                <label>DESTAQUE</label>
+                                <div class="col-md-12"><a class="product-image" href="#">
+                                        <img src="{% static 'escambo/img/iphone6.jpg' %}"></a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <h2><a href="#">iPhone 6s</a></h2>
+                                </div>
+                                <div class="col-4"><a class="small-text" href="#">compare </a></div>
+                            </div>
+                            <div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                    class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i><a
+                                    class="small-text" href="#">82 reviews</a></div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit. Nam ornare sem sed nisl dignissim, facilisis dapibus lacus vulputate. Sed
+                                        lacinia lacinia magna. </p>
+                                    <div class="row">
+                                        <div class="col-6"><button class="btn btn-light" type="button">Escambar</button>
+                                        </div>                                        
+                                        <div class="col-6">
+                                            <!--<p class="product-price">$599.00 </p> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col"></div>
                 </div>
             </div>
+        </div>
+        </div>
+
+        <!-- Linha 4 - 4 itens-->
+        <div class="container">
+            <div class="row">
+                {% for p in produtos|slice:"4:12"%}
+                <div class="col-md-3">
+                    <div class="row product-list">
+                        <div class="col-sm-6 col-md-4 col-lg-12 product-item">
+                            <div class="product-container">
+                                <div class="row">
+                                    <div class="col-md-12"><a class="product-image" href="#"><img
+                                                src="{% static 'escambo/img/iphone6.jpg' %}"></a></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h2><a href="#">{{ p.nome }}</a></h2>
+                                    </div>
+                                </div>
+                                <div class="product-rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                        class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i><a
+                                        class="small-text" href="#">{{ p.usuario_proprietario|truncatechars:15 }}</a></div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="product-description">{{ p.descricao|truncatechars:100 }}</p>
+                                        <div class="row">
+                                            <div class="col-6"><button class="btn btn-light" type="button">Escambar</button>
+                                            </div>
+                                            <div class="col-6">
+                                                <!--<p class="product-price">$599.00 </p> -->
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
         {% else %}
+        
         <div class="container">
             <h3>Nenhuma publicação para escambo disponivel</h3>
         </div>
