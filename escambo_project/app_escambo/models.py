@@ -12,7 +12,7 @@ class Escambador(models.Model):
     
     def __str__(self):
         return self.user.username
-    
+      
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=100)

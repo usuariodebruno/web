@@ -13,14 +13,13 @@ import random
 def index(request):
     produtos = Produto.objects.all().order_by('-id')
     categorias = Categoria.objects.all() 
-
-    template = loader.get_template('escambo/index.html')
+    
     context = { 
         'produtos': produtos,
         'categorias': categorias,
     }
 
-    return HttpResponse(template.render(context, request))
+    return render(request, 'escambo/index.html', context)
 
 def cadastro(request):
     if request.method == 'POST':
