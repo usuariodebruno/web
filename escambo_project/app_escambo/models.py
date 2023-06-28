@@ -2,6 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 
+class Termos(models.Model):
+    status_termo = models.BooleanField(default=False)
+    pdf_file = models.FileField(upload_to='pdfs/')
+
+    def __str__(self):
+        return str(self.status_termo)
+
 class Escambador(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)      
     cpf = models.CharField(max_length=14, blank=True)          
@@ -9,6 +16,8 @@ class Escambador(models.Model):
     telefone = PhoneNumberField(blank=True)
     foto = models.ImageField(upload_to='usuario_fotos/', null=True, blank=True)
     avaliacao = models.FloatField(default=0)    
+
+    termos = models.ForeignKey(Termos, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.user.username
