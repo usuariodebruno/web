@@ -1,0 +1,12 @@
+{% if produtos %}
+  <ul class="list-group">
+    {% for produto in produtos %}
+      <li class="list-group-item">{{ produto.nome }}</li>
+    {% empty %}
+      <li class="list-group-item">Nenhum produto encontrado.</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Nenhum produto disponível.</p>
+{% endif %}
+<a href="{% url 'escambo:index'%}">Voltar</a>

@@ -1,0 +1,33 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastro de Usuário</title>
+    {% bootstrap_css %}
+
+    <!-- biblioteca Inputmask -->
+    <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.6/dist/inputmask.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-6">Cadastro de Escambador</h1>
+        {% if form.errors %}
+        <p><strong>{{ form.errors }}</strong></p>
+        {% endif %}
+        <form action="{% url 'escambo:cadastro' %}" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label><br>
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-info">Cadastrar</button>
+        </form>
+        <a href="{% url 'escambo:index' %}">Voltar</a>
+    </div>
+
+    {% bootstrap_javascript %}
+</body>
+</html>

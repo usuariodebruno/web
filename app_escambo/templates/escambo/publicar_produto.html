@@ -1,0 +1,26 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cadastrar Produto</title>
+  {% bootstrap_css %}
+</head>
+<body>
+  <div class="container">
+    <h2>Cadastrar Produto</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="mb-3">
+          <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label><br/>
+          {{ field }}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </form>    
+    <a href="{% url 'escambo:index' %}">Voltar</a>
+  </div>
+
+  {% bootstrap_javascript %}
+</body>
+</html>
