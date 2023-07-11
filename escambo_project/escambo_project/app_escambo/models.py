@@ -1,23 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
-
-class Termos(models.Model):
-    status_termo = models.BooleanField(default=False)
-    pdf_file = models.FileField(upload_to='pdfs/')
-
-    def __str__(self):
-        return str(self.status_termo)
 
 class Escambador(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)      
     cpf = models.CharField(max_length=14, blank=True)          
     endereco = models.CharField(max_length=255)
     telefone = PhoneNumberField(blank=True)
-    foto = models.ImageField(upload_to='usuario_fotos/', null=True, blank=True)
-    avaliacao = models.FloatField(default=0)    
-
-    termos = models.ForeignKey(Termos, on_delete=models.CASCADE)
+    foto = models.ImageField(upload_to='static/escambo/usuario_fotos', null=True, blank=True)
+    avaliacao = models.FloatField(default=5)    
     
     def __str__(self):
         return self.user.username
@@ -40,43 +32,53 @@ class Produto(models.Model):
     )
 
     nome = models.CharField(max_length=100)
-    descricao_afetiva = models.TextField()
-    foto = models.ImageField(upload_to='media/', null=True, blank=True)
+    descricao_afetiva = models.CharField(max_length=500)
     estado_produto = models.CharField(max_length=20, choices=STATUS_CHOICES, default='bom')
-
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     usuario_proprietario = models.ForeignKey(Escambador, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome
 
+class Foto (models.Model):
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    imagem = models.ImageField(upload_to='static/escambo/produto_fotos/', null=True, blank=True)
 
-class Escambo(models.Model):
-    STATUS_CHOICES = (
-        ('pendente', 'Pendente'),
-        ('confirmada', 'Confirmada'),
-        ('concluida', 'Concluída'),
-    )
+class Cesta(models.Model):   
+    produto = models.ManyToManyField(Produto)
+    obsvacoes = models.CharField(max_length=500, blank=True)    
+    escambador_dono = models.ForeignKey(Escambador, on_delete=models.CASCADE)
 
-    produto1 = models.ForeignKey(Produto, related_name='trocas1', on_delete=models.CASCADE)
-    produto2 = models.ForeignKey(Produto, related_name='trocas2', on_delete=models.CASCADE)
-    usuario1 = models.ForeignKey(Escambador, related_name='trocas1', on_delete=models.CASCADE)
-    usuario2 = models.ForeignKey(Escambador, related_name='trocas2', on_delete=models.CASCADE)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pendente')
-
+    def calc_total_produtos(self):
+        return self.produto.count()
+    
     def __str__(self):
-        return f'Troca {self.id}, STATUS =', {self.status}
+        return f"{self.id} - {self.escambador_dono.user.username} - {self.calc_total_produtos()} produtos"
 
 
-class Chat(models.Model):
-    status_atividade = models.BooleanField(default=False)
-    participantes = models.ManyToManyField(Escambador, blank=True)
+class Chat(models.Model):    
+    usuarios = models.ManyToManyField(Escambador)
+    status_atividade = models.BooleanField(default=True)
     
     def __str__(self):
         return f'Chat {self.id}'
     
 class Mensagem(models.Model):    
-    data_hora = models.DateTimeField()
+    data_hora = models.DateTimeField(default=timezone.now)
     texto = models.CharField(max_length=2500)
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)    
+    remetente = models.ForeignKey(Escambador, on_delete=models.CASCADE)
 
-    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.texto
+    
+class Escambo(models.Model):
+    usuarios = models.ManyToManyField(Escambador)     
+    cestas = models.ManyToManyField(Cesta)    
+    chat = models.ForeignKey(Chat, on_delete=models.SET_NULL , null=True)
+    status_escambo = models.BooleanField(default=True)
+
+    def __str__(self):
+        #flat=True indica que queremos obter uma lista plana de valores, em vez de uma lista de tuplas.
+        usernames = self.usuarios.values_list('user__username', flat=True) 
+        return ' - '.join(usernames)

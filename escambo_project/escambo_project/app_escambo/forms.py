@@ -26,8 +26,6 @@ class CadastroForm(forms.Form):
     cpf = forms.CharField(max_length=14, required=False)
     endereco = forms.CharField(max_length=255)
     telefone = forms.CharField(max_length=20, required=False)
-    foto = forms.ImageField(required=False)
-    termos = forms.BooleanField(required=False)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -36,10 +34,6 @@ class CadastroForm(forms.Form):
 
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("As senhas não coincidem.")
-
-        termos_accepted = cleaned_data.get('termos')
-        if not termos_accepted:
-            raise forms.ValidationError("Os termos devem ser aceitos.")
 
         return cleaned_data
 
@@ -50,21 +44,18 @@ class CadastroForm(forms.Form):
         endereco = self.cleaned_data['endereco']
         telefone = self.cleaned_data['telefone']
         foto = self.cleaned_data['foto']
-        termos_accepted = self.cleaned_data['termos']
 
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError("Nome de usuário já está em uso.")
 
         user = User.objects.create_user(username=username, password=password)
 
-        termos = Termos.objects.create(status_termo=termos_accepted)
         escambador = Escambador.objects.create(
             user=user,
             cpf=cpf,
             endereco=endereco,
             telefone=telefone,
             foto=foto,
-            termos=termos
         )
 
         return escambador
@@ -72,7 +63,7 @@ class CadastroForm(forms.Form):
 class ProdutoForm(forms.ModelForm):
     class Meta:
         model = Produto
-        fields = ['nome', 'descricao_afetiva', 'foto', 'estado_produto', 'categoria', 'usuario_proprietario']
+        fields = ['nome', 'descricao_afetiva', 'estado_produto', 'categoria', 'usuario_proprietario']
         widgets = {
             'descricao_afetiva': forms.Textarea(attrs={'rows': 4}),
         }
