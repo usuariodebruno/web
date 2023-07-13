@@ -1,14 +1,36 @@
-<h2>Produtos da categoria: {{ categoria.nome }}</h2>
+{% extends 'escambo/base.html' %}
+{% load static %}
 
-{% if produtos %}
-  <ul>
+{%block titulo %}<title>categoria</title>{%endblock%}
+
+{% block conteudo %}
+<!-- RECÉM CHEGADOS -->
+<div class="container">
+  <hr>
+  <h1>Produtos {{ categoria.nome }}</h1>
+  <h5>30 produtos de {{ produtos|length }}</h5>
+  {% if produtos %}
+  <div class="container-postagem">
     {% for produto in produtos %}
-      <li>{{ produto.nome }}</li>
-    {% empty %}
-      <li>Nenhum produto encontrado.</li>
-    {% endfor %}
-  </ul>
+    {% if forloop.counter <= 30 %} <div class="foto">
+      <a href="detalhe_produto.html">
+        <img class="postagem" src="assets/img/corta-vento.jpg">
+        <h4 style="margin-top: 7%;">{{ produto.nome }}</h4>
+        <small>por {{ produto.usuario_proprietario.user.username }}</small>
+        <p class="group inner list-group-item-text" style="width: 30vh; text-align: justify;">{{ produto.descricao_afetiva|truncatechars:150 }}</p>
+      </a>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
 {% else %}
-  <p>Nenhum produto disponível para esta categoria.</p>
+<p>Nenhum produto disponível para esta categoria.</p>
 {% endif %}
-<a href="{% url 'escambo:index'%}">Voltar</a>
+<div class="d-flex" style="justify-content: center;">
+  <a class="btn" href="{% url 'escambo:index' %}"
+    style="border-radius: 1em; margin-right: 5px; background-color: burlywood;">Voltar</a>
+  <button type="submit" class="btn" id="buscar">próxima pagina</button>
+</div>
+<hr>
+{% endblock %}
+</div>

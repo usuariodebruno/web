@@ -8,7 +8,7 @@ app_name = 'escambo'
 
 urlpatterns = [    
     path('', views.index, name='index'),
-    path('cadastro/', views.cadastro, name='cadastro'),        
+    path('cadastroUsuario/', views.cadastroUsuario, name='cadastro_usuario'),        
     path('cadastroProduto/', views.cadastrar_produto, name='cadastrar_produto'), 
     path('pesquisar/', views.pesquisar_produtos, name='pesquisar_produtos'),
     path('categoria/<int:categoria_id>/', views.pesquisar_por_categoria, name='pesquisar_por_categoria'),

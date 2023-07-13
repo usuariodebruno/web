@@ -1,26 +1,36 @@
+{% extends 'escambo/base.html' %}
 {% load bootstrap4 %}
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Cadastrar Produto</title>
-  {% bootstrap_css %}
-</head>
-<body>
-  <div class="container">
-    <h2>Cadastrar Produto</h2>
-    <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      {% for field in form %}
-        <div class="mb-3">
-          <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label><br/>
-          {{ field }}
-        </div>
-      {% endfor %}
-      <button type="submit" class="btn btn-primary">Cadastrar</button>
-    </form>    
-    <a href="{% url 'escambo:index' %}">Voltar</a>
-  </div>
+{% load static %}
 
-  {% bootstrap_javascript %}
-</body>
-</html>
+{%block titulo %}<title>categoria</title>{%endblock%}
+
+{% block conteudo %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card mt-12">
+                <div class="card-body">
+                    <h3 class="card-title">cadastro produto</h3>
+                    <hr>
+                    {% if form.errors %}
+                    <p><strong>{{ form.errors }}</strong></p>
+                    {% endif %}
+                    <form action="{% url 'escambo:cadastrar_produto' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label><br>
+                            {{ field }}
+                        </div>
+                        {% endfor %}                        
+                        <a class="btn" href="{% url 'escambo:index' %}" style="border-radius: 1em; margin-left: 5px; background-color: burlywood;">Voltar</a>
+                        <button type="submit" class="btn" id="buscar">cadastrar</button> 
+                    </form>
+                    <hr>
+                    {% bootstrap_messages %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

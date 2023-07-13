@@ -8,7 +8,7 @@ class Escambador(models.Model):
     cpf = models.CharField(max_length=14, blank=True)          
     endereco = models.CharField(max_length=255)
     telefone = PhoneNumberField(blank=True)
-    foto = models.ImageField(upload_to='static/escambo/usuario_fotos', null=True, blank=True)
+    foto = models.ImageField(upload_to='escambo/usuario_fotos', null=True, blank=True)
     avaliacao = models.FloatField(default=5)    
     
     def __str__(self):
@@ -42,7 +42,7 @@ class Produto(models.Model):
 
 class Foto (models.Model):
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
-    imagem = models.ImageField(upload_to='static/escambo/produto_fotos/', null=True, blank=True)
+    imagem = models.ImageField(upload_to='escambo/produto_fotos/', null=True, blank=True)
 
 class Cesta(models.Model):   
     produto = models.ManyToManyField(Produto)

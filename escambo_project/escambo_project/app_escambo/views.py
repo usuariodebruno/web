@@ -1,50 +1,37 @@
-from django.http import HttpResponse
+
 from django.shortcuts import render, redirect
-from django.template import loader
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
-from .forms import CadastroForm, LoginForm, ProdutoForm
+from .forms import *
 from django.contrib import messages
-from .models import Produto,Categoria, Escambador
+from .models import *
+from .dao import *
 
 import random
 
-def index(request):
-    produtos = Produto.objects.all().order_by('-id')
-    categorias = Categoria.objects.all() 
-    
-    context = { 
-        'produtos': produtos,
-        'categorias': categorias,
-    }
 
-    return render(request, 'escambo/index.html', context)
+def index(request): 
+    dao = genericaDao()
+    return render(request, 'escambo/index.html', dao.listarProdutosCategorias())
 
-def cadastro(request):
+def cadastroUsuario(request):
     if request.method == 'POST':
-        form = CadastroForm(request.POST, request.FILES)
-        if form.is_valid():
-            escambador = form.save()
-            return redirect('escambo:index')
-    else:
-        form = CadastroForm()
-
-    return render(request, 'escambo/cadastro.html', {'form': form})
+        dao = usuarioDao()
+        if dao.cadastrarUsuario(request.POST, request.FILES):
+            messages.success(request, 'aí sim! cadastro realizado com sucesso! faça login para ter acesso a plataforma')      
+            return redirect('escambo:login')
+    return render(request, 'escambo/cadastro.html', {'form': CadastroForm()})
 
 
 def cadastrar_produto(request):
     if request.method == 'POST':
-        form = ProdutoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('escambo:index')  # Redirecionar para a página inicial após o cadastro
-    else:
-        form = ProdutoForm()
- 
-
-
-    return render(request, 'escambo/publicar_produto.html', {'form': form})
+        dao = produtoDao()
+       
+        if dao.cadastrarProduto(request.POST, request.FILES):            
+            return redirect('escambo:index')  # Redirecionar para a página detalhes do produto após o cadastro
+    
+    return render(request, 'escambo/publicar_produto.html', {'form': ProdutoForm()})
 
 def pesquisar_produtos(request):
     if request.method == 'GET':
@@ -85,9 +72,14 @@ def login_view(request):
                 return index(request)
             else:
                 messages.error(request, 'Credenciais inválidas. Por favor, tente novamente.')
-    else:
-        form = LoginForm()
-    return render(request, 'escambo/login.html', {'form': form})
+    else:        
+        mensagem = messages.get_messages(request)
+        form = LoginForm()   
+        context = {
+            'mensagem': mensagem,
+            'form': form
+        }
+    return render(request, 'escambo/login.html', context)
 
 def logout_view(request):
     logout(request)

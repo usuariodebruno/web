@@ -1,57 +1,35 @@
+{% extends 'escambo/base2.html' %}
 {% load bootstrap4 %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  {% bootstrap_css %}  
-  <link rel="stylesheet" href="{% static 'escambo/fonts/fontawesome-all.min.css' %}">
-  <link rel="stylesheet" href="{% static 'escambo/fonts/font-awesome.min.css' %}">
-  <link rel="stylesheet" href="{% static 'escambo/fonts/fontawesome5-overrides.min.css' %}">
-  <link rel="stylesheet" href="{% static 'escambo/css/style.css' %}">
-</head>
-<body>
-  <!-- CABEÇALHO-->
-  <!-- SMALL NAV-->
-  <div class="small_nav">
-      <div class="container">
-          <div class="itens">
-              <div class="row">
-                  <nav class="a">
-                      <ul class="a">
-                          <li class="a"><small>Ajuda</small></li>
-                          <a href="{% url 'escambo:cadastro'%}"><li class="a"><small>Cadastre-se</small></li></a>
-                      </ul>
-                  </nav>
-              </div>
-          </div>
-      </div>
-  </div>        
-   
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <div class="card mt-5">
-          <div class="card-body">
-            <h3 class="card-title">Login</h3>
-            <hr>
-            <form action="{% url 'escambo:login' %}" method="POST">
-              {% csrf_token %}
-              {% bootstrap_form form %}
-              {% buttons %}
-                <button type="submit" class="btn btn-primary">Entrar</button>
-              {% endbuttons %}
-            </form>
-            <hr>
-            {% bootstrap_messages %}
-          </div>
+{%block titulo %}<title>login</title>{%endblock%}
+
+{% block frase_destaque %}
+<div class="slogan">
+  <h4>entre na sua conta e aproveite a plataforma ao máximo</h4>
+</div>
+{% endblock %}
+{% block conteudo %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card mt-5">
+        <div class="card-body">
+          <h3 class="card-title">login</h3>
+          <hr>
+          <form action="{% url 'escambo:login' %}" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+            <a class="btn" href="{% url 'escambo:index' %}" style="border-radius: 1em; margin-left: 5px; background-color: burlywood;">Voltar</a>
+            <button type="submit" class="btn" id="buscar">entrar</button> 
+            {% endbuttons %}
+          </form>
+          <hr>
+          {% bootstrap_messages %}
         </div>
       </div>
     </div>
   </div>
-  {% bootstrap_javascript %}
-</body>
-</html>
+</div>
+{% endblock %}
