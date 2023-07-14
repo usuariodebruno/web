@@ -13,10 +13,12 @@ from .dao import *
 import random
 
 
+#FAZER
 def index(request): 
     dao = genericaDao()
     return render(request, 'escambo/index.html', dao.listarProdutosCategorias())
 
+#FAZER
 def cadastroUsuario(request):
     if request.method == 'POST':
         dao = usuarioDao()
@@ -25,7 +27,7 @@ def cadastroUsuario(request):
             return redirect('escambo:login')
     return render(request, 'escambo/cadastro.html', {'form': CadastroForm()})
 
-
+#FAZER
 def cadastrar_produto(request):
     if request.method == 'POST':
         dao = produtoDao()
@@ -87,6 +89,7 @@ def logout_view(request):
     logout(request)
     return index(request)
 
+#FAZER
 def detalhe_produto(request,**kwargs):
     dao = produtoDao()
     return render(request, 'escambo/detalhe_produto.html', dao.detalharProduto(kwargs.get('produto_id')))
