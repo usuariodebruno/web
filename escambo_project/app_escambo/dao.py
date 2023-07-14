@@ -8,6 +8,15 @@ class produtoDao:
         form = ProdutoForm(r, rfile)
         if form.is_valid():
             return self.save(form.cleaned_data)
+    
+    def detalharProduto(self, id_produto):
+        produto = Produto.objects.get(id=id_produto)
+        dao = categoriaDao()
+        context = {
+            'produto': produto,
+            'categorias': dao.buscarCategorias()
+        }
+        return context
 
     def save(self, cleaned_data):
         nome = cleaned_data['nome']
@@ -58,6 +67,10 @@ class usuarioDao:
 
         return escambador
 
+class categoriaDao:
+    def buscarCategorias(self):
+        return Categoria.objects.all() 
+    
 class genericaDao:
     def listarProdutosCategorias(self):        
         produtos = Produto.objects.all().order_by('-id')

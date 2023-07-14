@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
+
 app_name = 'escambo'
 
 urlpatterns = [    
@@ -12,6 +13,7 @@ urlpatterns = [
     path('cadastroProduto/', views.cadastrar_produto, name='cadastrar_produto'), 
     path('pesquisar/', views.pesquisar_produtos, name='pesquisar_produtos'),
     path('categoria/<int:categoria_id>/', views.pesquisar_por_categoria, name='pesquisar_por_categoria'),
+    path('detalheProduto/<int:produto_id>/', views.detalhe_produto, name='detalhe_produto'),
 
  
     path('login/', views.login_view, name='login'),

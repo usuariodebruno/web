@@ -1,7 +1,9 @@
 
-from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.views import View
 
 from .forms import *
 from django.contrib import messages
@@ -84,3 +86,8 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return index(request)
+
+def detalhe_produto(request,**kwargs):
+    dao = produtoDao()
+    return render(request, 'escambo/detalhe_produto.html', dao.detalharProduto(kwargs.get('produto_id')))
+        

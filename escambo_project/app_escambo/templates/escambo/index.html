@@ -55,14 +55,14 @@
     <div class="container-postagem">
         {% for produto in produtos %}
         {% if forloop.counter <= 9 %} <div class="foto">
-            <a href="detalhe_produto.html">
+            <a href="{% url 'escambo:detalhe_produto' produto.id %}">
                 <img class="postagem" src="assets/img/corta-vento.jpg">
                 <h4 style="margin-top: 7%;">{{ produto.nome }}</h4>
                 <small>por {{ produto.usuario_proprietario.user.username }}</small>
                 <p class="group inner list-group-item-text" style="width: 30vh; text-align: justify;">
                     {{produto.descricao_afetiva|truncatechars:150 }}</p>
             </a>
-    </div>
+    </div>   
     {% endif %}
     {% endfor %}
 </div>
