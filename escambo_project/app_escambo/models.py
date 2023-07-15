@@ -35,6 +35,7 @@ class Produto(models.Model):
     descricao_afetiva = models.CharField(max_length=500)
     estado_produto = models.CharField(max_length=20, choices=STATUS_CHOICES, default='bom')
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    destaque = models.BooleanField(default=False)
     usuario_proprietario = models.ForeignKey(Escambador, on_delete=models.CASCADE)
 
     def __str__(self):

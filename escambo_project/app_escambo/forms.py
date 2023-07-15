@@ -5,10 +5,12 @@ from django.contrib.auth.models import User
 from .models import *
 
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
 
 class UsuarioForm(UserCreationForm):
     cpf = forms.CharField(max_length=14)
@@ -44,6 +46,6 @@ class ProdutoForm(forms.ModelForm):
 
     class Meta:
         model = Produto
-        fields = ['nome', 'descricao_afetiva', 'estado_produto', 'categoria', 'usuario_proprietario', 'fotos']
+        fields = ['nome', 'descricao_afetiva', 'estado_produto', 'categoria', 'destaque', 'usuario_proprietario', 'fotos']
 
    

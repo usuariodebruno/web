@@ -1,4 +1,6 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from django import forms
 from .models import *
 from .forms import *
@@ -17,7 +19,31 @@ class produtoDao:
             'categorias': dao.buscarCategorias()
         }
         return context
+    
+    def buscarPorCategoria(self, categoria_id):
+        categoria = Categoria.objects.get(id=categoria_id)
+        produtos = Produto.objects.filter(categoria=categoria).order_by('-id')
 
+        context = {
+            'categoria': categoria,
+            'produtos': produtos
+        }
+        return context
+    
+    def pequisarProduto(self, r):
+        palavra = r.GET.get('query')
+        if palavra:
+            produtos = Produto.objects.filter(nome__icontains=palavra)
+        else:
+            produtos = Produto.objects.all()
+        
+        context = {
+            'produtos': produtos,
+            'palavra': palavra
+        }
+
+        return context
+    
     def save(self, cleaned_data):
         nome = cleaned_data['nome']
         descricao_afetiva = cleaned_data['descricao_afetiva']
@@ -69,7 +95,7 @@ class usuarioDao:
 
 class categoriaDao:
     def buscarCategorias(self):
-        return Categoria.objects.all() 
+        return Categoria.objects.all()     
     
 class genericaDao:
     def listarProdutosCategorias(self):        
@@ -82,3 +108,29 @@ class genericaDao:
         }
 
         return context
+
+"""
+class loginDao:
+    def login(self, r):
+        form = LoginForm(r, data=r.POST)        
+        if form.is_valid():
+            nome = form.cleaned_data['username']
+            senha = form.cleaned_data['password']
+            user = authenticate(request=r, username=nome, password=senha)
+            if user is not None:
+                return user
+        else:        
+            mensagem = messages.get_messages(r)
+            form = LoginForm()   
+            context = {
+                'mensagem': messages.error(r, 'Credenciais inválidas. Por favor, tente novamente.'),
+                'form': form
+            }
+            return context 
+                       
+    def pegarFormularioLimpo(self):
+        return LoginForm()
+    
+    def pegarFormularioSessao(self, r):
+        return LoginForm(r, data=r.POST)
+"""

@@ -12,64 +12,35 @@
 {%endblock%}
 
 {% block conteudo %}
-<div class="slogan">
-    <h4>Vestuário com afeto</h4>
-</div>
 
-<!--BARRA DE PESQUISA-->
-<div class="container-2" id="pesquisa_barra">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-10 offset-md-1">
-                    <div class="card m-auto" style="max-width: 80vh;">
-                        <div class="card-body"
-                            style="padding-right: 0px;padding-top: 0px;padding-bottom: 0px;padding-left: 0px;">
-                            <form class="d-flex align-items-center" action="">
-                                <input class="form-control form-control-lg flex-shrink-1 form-control-borderless"
-                                    type="search" placeholder="busque 'camisa, 'tênis', 'brincos'" name="searchbar"
-                                    style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px;">
-                                <button class="btn" id="buscar" type="submit" style="margin-right: 1em;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                                        class="bi bi-search-heart" viewBox="0 0 16 16">
-                                        <path
-                                            d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018Z" />
-                                        <path
-                                            d="M13 6.5a6.471 6.471 0 0 1-1.258 3.844c.04.03.078.062.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1.007 1.007 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5ZM6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z" />
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!--RECÉM CHEGADOS-->
 <div class="container">
     <hr>
     <h1>recém chegados</h1>
     {% if produtos %}
-    <div class="container-postagem">
-        {% for produto in produtos %}
-        {% if forloop.counter <= 9 %} <div class="foto">
-            <a href="{% url 'escambo:detalhe_produto' produto.id %}">
-                <img class="postagem" src="assets/img/corta-vento.jpg">
-                <h4 style="margin-top: 7%;">{{ produto.nome }}</h4>
-                <small>por {{ produto.usuario_proprietario.user.username }}</small>
-                <p class="group inner list-group-item-text" style="width: 30vh; text-align: justify;">
-                    {{produto.descricao_afetiva|truncatechars:150 }}</p>
-            </a>
-    </div>   
+    <div>
+        <div class="container-postagem">
+            {% for produto in produtos %}
+            {% if forloop.counter <= 9 %} <div class="foto">
+                <a href="{% url 'escambo:detalhe_produto' produto.id %}">
+                    {% if produto.foto_set.all %}
+                        <img class="postagem" src="{{ produto.foto_set.first.imagem.url }}">
+                    {% else %}
+                        <img class="postagem" src="{% static 'escambo/img/produto/produto_padrao_foto.png' %}">
+                    {% endif %}
+                    <h4 style="margin-top: 7%;">{{ produto.nome }}</h4>
+                    <small>por {{ produto.usuario_proprietario.user.username }}</small>
+                    <p class="group inner list-group-item-text" style="width: 30vh; text-align: justify;">
+                        {{produto.descricao_afetiva|truncatechars:150 }}</p>
+                </a>
+        </div>   
+            {% endif %}
+            {% endfor %}
+    </div>
+    {% else %}
+    <p>Nenhum produto disponível para esta categoria.</p>
     {% endif %}
-    {% endfor %}
-</div>
-{% else %}
-<p>Nenhum produto disponível para esta categoria.</p>
-{% endif %}
 <hr>
 </div>
-
 {% endblock %}
