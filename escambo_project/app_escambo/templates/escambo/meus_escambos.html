@@ -1,0 +1,365 @@
+{% extends 'escambo/base.html' %}
+{% load static %}
+
+{%block titulo %}<title>Detalhe Produto</title>{%endblock%}
+{%block css_adicional %}
+<link rel="stylesheet" href="{% static 'escambo/css/estiloEscambos.css' %}">
+{%endblock%}
+{% block conteudo %}
+<!--sesção cestas-->
+<div class="container">
+    <hr>
+    <div class="container-cesta">
+        <div class="cesta-vai">
+            <h1>aguardando confirmação</h1>
+            <small>
+                esses são os escambos que você começou e estão a espera de confirmação!
+            </small>
+        </div>
+        <div class="itens-vai">
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">ver</th>
+                        <th scope="col">escambo_id</th>
+                        <th scope="col">qnt. itens</th>
+                        <th scope="col">usuario</th>
+                        <th scope="col">status escambo</th>
+                        <th scope="col">ações</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if meus_escambos%}
+                    {% for escambo in meus_escambos %}
+                    {% if escambo.escambo_ativo %}
+                    <tr>
+                        <td scope="col">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707z" />
+                                </svg>
+                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Itens envolvidos</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Fechar"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h4>escambos_usuario</h4>
+                                                <div class="foto">
+                                                    <img src="assets/img/corta-vento.jpg" alt="Foto 1" width="250">
+                                                </div>
+
+                                                <h4>itens de escambador</h4>
+                                                <div class="foto">
+                                                    <img src="assets/img/brincos.jpg" alt="Foto 2" width="250">
+                                                </div>
+                                                <div class="foto">
+                                                    <img src="assets/img/camisa.jpg" alt="Foto 2" width="250">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Fechar</button>
+                                                <button type="button" class="btn btn-primary">Salvar alterações</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </td>
+                        <td scope="row"> {{escambo.id}} </td>
+                        <td scope="row"> {{escambo.qnt_itens}} </td>
+
+                        {% for usuario in escambo.usuarios.all %}
+                        {% if usuario.user != request.user %}
+                        <td>{{ usuario.user.username }}</td>
+                        {% endif %}
+                        {% endfor %}
+
+                        <th>ativo</th>
+                        <td width='80'><a class="btn btn-outline-info" href="#">modificar</a></td>
+                        <td><a class="btn btn-outline-primary" href="#">conversar</a></td>
+                        <td width='80'><a class="btn btn-outline-danger" href="#">desistir</a></td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {%else%}
+                    <tr>
+                        <td scope="col">
+                            <p>você não iniciou nenhum escambo</p>
+                        </td>
+                    </tr>
+                    {%endif%}
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div class="cesta-vem">
+            <h1>solicitações</h1>
+            <small>
+                escambo começados por outros usuários, esperando você dar o sinal verde!
+            </small>
+        </div>
+        <div class="itens-vem">
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">ver</th>
+                        <th scope="col">escambo_id</th>
+                        <th scope="col">qnt. itens</th>
+                        <th scope="col">usuario</th>
+                        <th scope="col">status escambo</th>
+                        <th scope="col">ações</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for escambo in escambos_solicitados %}
+                    {% if escambo.escambo_ativo %}
+                    <tr>
+                        <th scope="col">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707z" />
+                                </svg>
+                            </a>
+                        </th>
+                        <!-- Modal 
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Itens envolvidos</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Fechar"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4>meus itens</h4>
+                                            <div class="foto">
+                                                <img src="assets/img/corta-vento.jpg" alt="Foto 1" width="250">
+                                            </div>
+
+                                            <h4>itens de escambador</h4>
+                                            <div class="foto">
+                                                <img src="assets/img/brincos.jpg" alt="Foto 2" width="250">
+                                            </div>
+                                            <div class="foto">
+                                                <img src="assets/img/camisa.jpg" alt="Foto 2" width="250">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Fechar</button>
+                                            <button type="button" class="btn btn-primary">Salvar alterações</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        <td scope="row"> {{escambo.id}} </td>
+                        <td scope="row"> {{escambo.qnt_itens}} </td>
+
+                        {% for usuario in escambo.usuarios.all %}
+                        {% if usuario.user != request.user %}
+                        <td>{{ usuario.user.username }}</td>
+                        {% endif %}
+                        {% endfor %}
+
+                        <th>ativo</th>
+                        <td width='80'><a class="btn btn-outline-info" href="#">modificar</a></td>
+                        <td><a class="btn btn-outline-primary" href="#">conversar</a></td>
+
+                        <td width='80'>
+                            <form action="{% url 'escambo:finalizar_escambo' escambo.id %}" method="POST">
+
+                                {% csrf_token %}
+                                <button class="btn btn-outline-success" type="submit"> <input type="hidden"
+                                        name="escambo.id" value="{{ escambo.id }}">aceitar</button>
+
+                            </form>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr>
+    <div class="container-cesta">
+        <div class="cesta-vai">
+            <h1>escambos concluidos</h1>
+            <small>
+                aqui estão os escambos que já foram finalizados, fechados e resolvidos!
+            </small>
+        </div>
+        <div class="itens-vai">
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">ver</th>
+                        <th scope="col">qnt. itens</th>
+                        <th scope="col">usuario</th>
+                        <th scope="col">status escambo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="col">
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707z" />
+                                </svg>
+                            </a>
+                        </th>
+                        <th scope="row"> 3 </th>
+                        <td>nome usuario</td>
+                        <td width='80'><a class="btn btn-outline-secondary" href="#">finalizado</a></td>
+                    </tr>
+                    <tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <!--
+    
+
+        <div class="cesta-vem">
+            <h1>tão de olho</h1>
+            <small>escambo começados por outros usuários, esperando você dar o sinal verde!</small>
+        </div>
+        <div class="itens-vem">
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">ver</th>
+                        <th scope="col">escambo_id</th>
+                        <th scope="col">qnt. itens</th>
+                        <th scope="col">usuario</th>
+                        <th scope="col">status escambo</th>
+                        <th scope="col">ações</th>
+                        <th scope="col"></th>                        
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for escambo in meus_escambos %}
+                        {% if escambo.escambo_ativo %}
+                        <tr>
+                            <td scope="col">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707z" />
+                                    </svg>
+                                </a> 
+                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Itens envolvidos</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Fechar"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h4>escambos_usuario</h4>
+                                                <div class="foto">
+                                                    <img src="assets/img/corta-vento.jpg" alt="Foto 1" width="250">
+                                                </div>
+
+                                                <h4>itens de escambador</h4>
+                                                <div class="foto">
+                                                    <img src="assets/img/brincos.jpg" alt="Foto 2" width="250">
+                                                </div>
+                                                <div class="foto">
+                                                    <img src="assets/img/camisa.jpg" alt="Foto 2" width="250">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Fechar</button>
+                                                <button type="button" class="btn btn-primary">Salvar alterações</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>                            
+                            <td scope="row"> {{escambo.id}} </td>                            
+                            <td scope="row"> {{escambo.qnt_itens}} </td>
+
+                            {% for usuario in escambo.usuarios.all %}
+                                {% if usuario.user != request.user %}
+                                    <td>{{ usuario.user.username }}</td>
+                                {% endif %}
+                            {% endfor %}
+
+                            <th>ativo</th>
+                            <td width='80'><a class="btn btn-outline-info" href="#">modificar</a></td>                            
+                            <td><a class="btn btn-outline-primary" href="#">conversar</a></td>         
+                            <td width='80'><a class="btn btn-outline-success" href="#">aceitar</a></td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr>
+    <div class="container-cesta">
+        <div class="cesta-vai">
+            <h1>escambos concluidos</h1>
+            <small>aqui estão os escambos que já foram finalizados, fechados e resolvidos!</small>
+        </div>
+        <div class="itens-vai">
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">ver</th>
+                        <th scope="col">qnt. itens</th>
+                        <th scope="col">usuario</th>
+                        <th scope="col">status escambo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="col">
+                            <a href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707z" />
+                                </svg>
+                            </a>
+                        </th>
+                        <th scope="row"> 3 </th>
+                        <td>nome usuario</td>
+                        <td width='80'><a class="btn btn-outline-secondary" href="#">finalizado</a></td>
+                    </tr>
+                    <tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr>
+</a> -->
+</div>
+{% endblock %}

@@ -1,13 +1,16 @@
 
-from django.http import HttpResponse
+from audioop import reverse
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
 from .forms import *
 from django.contrib import messages
 from .models import *
 from .dao import *
+import sys
 
 
 
@@ -28,14 +31,16 @@ def cadastroUsuario(request):
     return render(request, 'escambo/cadastro.html', {'form': CadastroForm()})
 
 #FAZER
+@login_required(redirect_field_name='next', login_url="/login/")
 def cadastrar_produto(request):
     if request.method == 'POST':
         dao = produtoDao()
        
-        if dao.cadastrarProduto(request.POST, request.FILES):            
-            return redirect('escambo:index')  # Redirecionar para a página detalhes do produto após o cadastro
+        if dao.cadastrarProduto(request, request.FILES):            
+            return redirect('escambo:index')    
     
-    return render(request, 'escambo/publicar_produto.html', {'form': ProdutoForm()})
+    form = ProdutoForm()
+    return render(request, 'escambo/publicar_produto.html', {'form': form})
 
 #Fazer
 def pesquisar_produtos(request):
@@ -54,14 +59,165 @@ def pesquisar_por_categoria(request, categoria_id):
 def logout_view(request):
     logout(request)
     return index(request)
+'''
+#FAZER
+def detalhe_produto(request, produto_id):
+    dao = produtoDao()
+    return render(request, 'escambo/detalhe_produto.html', dao.detalharProduto(produto_id))
+
+@login_required(redirect_field_name='next', login_url="/login/")
+def selecionar_produtos_cesta(request, *args, **kwargs):
+    #Produto interesse
+    produto = get_object_or_404(Produto, id=kwargs['produto_id']) 
+   
+    # Escambador do produto selecionado
+    outro_escambador_cesta = produto.usuario_proprietario 
+
+    # Escambador do logado
+    escambador_logado = request.user.escambador 
+    produtos_usuario_logado = Produto.objects.filter(usuario_proprietario=escambador_logado)
+    
+    if request.method == 'POST':
+        # Cesta do outro usuario
+        outro_escambador_cesta = Cesta.objects.create(escambador_dono=outro_escambador_cesta)
+        outro_escambador_cesta.produto.add(produto)
+        outro_escambador_cesta.save()
+        #print('cesta do outro usuario', outro_escambador_cesta)
+
+        # Cesta usuario logado
+        usuario_logado_cesta = Cesta.objects.create(escambador_dono=escambador_logado)
+        produtos_usuario_logado = request.POST.getlist('produtos')
+
+        for produto_logado in produtos_usuario_logado:
+            usuario_logado_cesta.produto.add(produto_logado)
+
+        usuario_logado_cesta.save()
+        
+        #print('cesta do usuario logado', usuario_logado_cesta)
+        #print("------------ enviou")
+        escambo = Escambo()
+        context = {
+            'outro_escambador_cesta': outro_escambador_cesta,
+            'usuario_logado_cesta': usuario_logado_cesta,
+        }
+        
+        return render(request, 'escambo/meus_escambos.html', context )
+'''
+#FAZER
+def detalhe_produto(request, produto_id):
+    dao = produtoDao()
+    return render(request, 'escambo/detalhe_produto.html', dao.detalharProduto(produto_id))
+
+@login_required(redirect_field_name='next', login_url="/login/")
+def selecionar_produtos_cesta(request, *args, **kwargs):
+    #Produto interesse
+    produto = get_object_or_404(Produto, id=kwargs['produto_id']) 
+    # Escambador do produto selecionado
+    outro_escambador = produto.usuario_proprietario 
+
+    # Escambador do logado
+    escambador_logado = request.user.escambador 
+    produtos_usuario_logado = Produto.objects.filter(usuario_proprietario=escambador_logado)
+    
+    if request.method == 'POST':
+        
+        # Cesta do outro usuario
+        outro_escambador_cesta = Cesta.objects.create(escambador_dono=outro_escambador)
+        outro_escambador_cesta.produto.add(produto)
+        outro_escambador_cesta.save()
+
+        # Cesta usuario logado
+        usuario_logado_cesta = Cesta.objects.create(escambador_dono=escambador_logado)
+        produtos_usuario_logado = request.POST.getlist('produtos')
+
+        for produto_logado in produtos_usuario_logado:
+            usuario_logado_cesta.produto.add(produto_logado)
+        usuario_logado_cesta.save()    
+
+        escambo = Escambo.objects.create(escambo_ativo=True, usuario_iniciou= request.user.escambador.id)
+        escambo.cestas.add(usuario_logado_cesta, outro_escambador_cesta)
+        dao = cestaDao()
+        escambo.qnt_itens = (usuario_logado_cesta.produto.count()) + (outro_escambador_cesta.produto.count())
+
+        escambo.usuarios.add(outro_escambador_cesta.escambador_dono, usuario_logado_cesta.escambador_dono)
+        escambo.confirmado_usuario_iniciou = True
+        escambo.save()
+
+        #
+        '''
+        escambos_usuario = Escambo.objects.filter(usuarios=escambador_logado).order_by('-id')
+        escambos_solicitados = Escambo.objects.exclude(usuario_iniciou=escambador_logado.id).filter(usuarios=escambador_logado)
+        
+        context = {
+            'meus_escambos': escambos_usuario,
+            'escambos_solicitados': escambos_solicitados,
+            
+        }
+        return render(request, 'escambo/meus_escambos.html', context ) 
+
+        '''
+        return redirect('escambo:meus_escambos')
+
+@login_required(redirect_field_name='next', login_url="/login/")
+def meus_escambos(request): 
+    dao = escamboDao()     
+    escambador_logado = request.user.escambador
+    escambos_usuario = Escambo.objects.filter(usuarios=escambador_logado)
+    print(escambos_usuario)
+    
+    escambos_solicitados = Escambo.objects.exclude(usuario_iniciou=escambador_logado.id).filter(usuarios=escambador_logado)
+    print(escambos_solicitados)
+
+    escambos_usuario = escambos_usuario.exclude(id__in=escambos_solicitados.values_list('id', flat=True))
+    print(escambos_usuario) 
+    context = {
+        'meus_escambos': escambos_usuario,
+        'escambos_solicitados': escambos_solicitados,        
+    }
+
+    return render(request, 'escambo/meus_escambos.html', context ) 
+
+@login_required(redirect_field_name='next', login_url="/login/")
+def selecionar_produtos_teste(request, **kwargs):
+    produto = get_object_or_404(Produto, id=kwargs['produto_id']) #Produto interesse   
+
+    # Escambador do logado
+    escambador_logado = request.user.escambador 
+    produtos_usuario_logado = Produto.objects.filter(usuario_proprietario=escambador_logado)
+ 
+    if request.method == 'POST':      
+            context = {
+                'produto': produto,
+                'produtos_usuario_logado': produtos_usuario_logado,
+                'usuario_logado': escambador_logado
+            }
+            return render(request, 'escambo/escambo_selecao.html', context)       
+        
+@login_required(redirect_field_name='next', login_url="/login/")
+def excluir_produto(request, **kwargs):
+    produto = get_object_or_404(Produto, id=kwargs['produto_id']) #Produto para exluir
+    print(kwargs['produto_id'])
+    if request.method == 'POST':
+        produto.delete()
+        return redirect('escambo:index')
+    
+def finalizar_escambo(request, **kwargs):
+    escambo = get_object_or_404(Escambo, id=kwargs['escambo_id'])  
+
+    escambo.confirmado_usuario_outro = True
+    escambo.escambo_ativo = False
+    dao = escamboDao()
+    if dao.todos_confirmados(escambo):
+        escambo.save()
+        # Passar pelos produtos das cestas do escambo e mudar status_trocado dos produtos para True
+        for cesta in escambo.cestas.all():
+            for produto in cesta.produto.all():
+                produto.status_trocado = True
+                produto.save()
+        return render(request, 'escambo_sucesso.html')    
+    return HttpResponse("Erro ao finalizadar escambo!")
 
 #FAZER
-def detalhe_produto(request,**kwargs):
-    dao = produtoDao()
-
-    return render(request, 'escambo/detalhe_produto.html', dao.detalharProduto(kwargs.get('produto_id')))
-
-#TRETA
 def login_view(request):  
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
@@ -83,18 +239,3 @@ def login_view(request):
         
     form = LoginForm()
     return render(request, 'escambo/login.html', { 'form': form})
-
-"""
-def login_view(request):  
-    dao = loginDao()  
-    if request.method == 'POST':
-        retorno = dao.login(request)
-        if retorno is not None:
-            login(request, user=retorno)
-            return index(request)
-        else: 
-            return render(request, 'escambo/login.html', retorno)
-        
-    form = LoginForm()
-    return render(request, 'escambo/login.html', { 'form': form})
-"""

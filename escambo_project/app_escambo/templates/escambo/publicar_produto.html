@@ -14,11 +14,12 @@
         <div class="col-md-6 offset-md-3">
             <div class="card mt-12">
                 <div class="card-body">
-                    <h3 class="card-title">cadastro de produto</h3>
+                    <h3 class="card-title">publique seu produto</h3>
                     <hr>
                     {% if form.errors %}
                     <p><strong>{{ form.errors }}</strong></p>
                     {% endif %}
+                    <!--
                     <form action="{% url 'escambo:cadastrar_produto' %}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% for field in form %}
@@ -28,8 +29,37 @@
                         </div>
                         {% endfor %}                        
                         <a class="btn" href="{% url 'escambo:index' %}" style="border-radius: 1em; margin-left: 5px; background-color: burlywood;">Voltar</a>
-                        <button type="submit" class="btn" id="buscar">cadastrar</button> 
+                        <button type="submit" class="btn" id="buscar">publicar produto</button> 
                     </form>
+                    -->
+                    {% if request.user.escambador and request.user.escambador.ativos > 0 %}
+                        <!-- Conteúdo a ser exibido se o usuário tiver um 'Escambador' e 'ativos' maior que zero -->
+                        <p>O usuário tem ativos.</p>
+                    {% else %}
+                        <!-- Conteúdo a ser exibido se o usuário não tiver um 'Escambador' ou 'ativos' igual ou menor que zero -->
+                        <p>O usuário não tem ativos.</p>
+                    {% endif %}
+                    <form action="{% url 'escambo:cadastrar_produto' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in form %}                            
+                            {% if field.name == 'destaque' %}
+                                {% if request.user.escambador and request.user.escambador.ativos > 0 %}
+                                    <div class="mb-3">
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label><br>
+                                        {{ field }}
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="mb-3">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label><br>
+                                    {{ field }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}                        
+                        <a class="btn" href="{% url 'escambo:index' %}" style="border-radius: 1em; margin-left: 5px; background-color: burlywood;">Voltar</a>
+                        <button type="submit" class="btn" id="buscar">publicar produto</button> 
+                    </form>
+                    
                     <hr>
                     {% bootstrap_messages %}
                 </div>

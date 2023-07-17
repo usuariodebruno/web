@@ -12,16 +12,6 @@ class LoginForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
 
 
-class UsuarioForm(UserCreationForm):
-    cpf = forms.CharField(max_length=14)
-    endereco = forms.CharField(max_length=255)
-    telefone = forms.CharField(max_length=20)
-    foto = forms.ImageField(required=False)
-
-    class Meta:
-        model = Escambador
-        fields = ('cpf', 'endereco', 'telefone', 'foto')
-
 class CadastroForm(forms.Form):
     username = forms.CharField(max_length=150)
     password1 = forms.CharField(widget=forms.PasswordInput)
@@ -40,12 +30,14 @@ class CadastroForm(forms.Form):
             raise forms.ValidationError("As senhas não coincidem.")
         
         return cleaned_data
+    
+    class Meta:
+        model = Produto
 
 class ProdutoForm(forms.ModelForm):
     fotos = MultiFileField(min_num=1, max_num=6, max_file_size=1024 * 1024 * 5)
-
     class Meta:
         model = Produto
-        fields = ['nome', 'descricao_afetiva', 'estado_produto', 'categoria', 'destaque', 'usuario_proprietario', 'fotos']
-
+        fields = '__all__'
+        exclude = ['status_trocado', 'usuario_proprietario']
    

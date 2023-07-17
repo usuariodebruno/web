@@ -1,4 +1,9 @@
 
+body {  
+  text-transform: lowercase;
+  font-family: 'Dosis', sans-serif;
+}
+
 .detalhes {  display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
@@ -23,7 +28,6 @@
   overflow: hidden;
   position: relative;
   margin: 0 auto;
-  border-radius: 10em;
 }
 
 .carousel img {
@@ -76,6 +80,16 @@ h6.descricao_afetiva {
   background-color: #4499df;
 }
 
+button#excluir {
+  background-color: #da70a1;
+  border-radius: 1em;
+  margin-top: 2em; margin-right: 1em;
+}
+button#excluir:hover {
+  background-color: #d8498b;
+}
+
+
 button#buscar {
   border-radius: 1em;
   background-color: #81B5E0;
@@ -90,10 +104,6 @@ button#buscar svg {
   fill: white
 }
 
-.area-dados2 a {
-  text-decoration: none;
-  color: black;
-}
 
 /*usuario*/
 .escambador_produto img {

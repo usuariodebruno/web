@@ -14,6 +14,11 @@ urlpatterns = [
     path('pesquisar/', views.pesquisar_produtos, name='pesquisar_produtos'),
     path('categoria/<int:categoria_id>/', views.pesquisar_por_categoria, name='pesquisar_por_categoria'),
     path('detalheProduto/<int:produto_id>/', views.detalhe_produto, name='detalhe_produto'),
+    path('selecionarProdutosCesta/<int:produto_id>/', views.selecionar_produtos_cesta, name='selecionar_produtos_cesta'),    
+    path('selecionarTeste/<int:produto_id>/', views.selecionar_produtos_teste, name='selecionar_produtos_teste'),
+    path('excluirProduto/<int:produto_id>', views.excluir_produto, name='excluir_produto'),
+    path('finalizarEscambo/<int:escambo_id>', views.finalizar_escambo, name='finalizar_escambo'),
+    path('meusEscambos/', views.meus_escambos, name='meus_escambos'),
 
  
     path('login/', views.login_view, name='login'),

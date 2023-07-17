@@ -26,9 +26,12 @@
                                 <li><img src="{%static 'escambo/img/icons/meus_produtos.png' %}"
                                         title="meus produtos"><br>meus produtos
                                 </li>
-                                <li><img src="{% static 'escambo/img/icons/meus_escambo.png' %}"
-                                        title="meus escambos"><br>meus escambos
+                                <li>
+                                    <a href="{% url 'escambo:meus_escambos'%}">
+                                        <img src="{% static 'escambo/img/icons/meus_escambo.png' %}"
+                                            title="meus escambos"><br>meus escambos</a>
                                 </li>
+                                
                                 <li>
                                     <a href="{% url 'escambo:cadastrar_produto'%}">
                                         <img src="{% static 'escambo/img/icons/publica.png' %}"
@@ -301,7 +304,6 @@
             {% block conteudo %}{% endblock %}
         </div>
 
-        <hr>
         <!--BARRA DE PESQUISA -->
         <div class="container-2" id="pesquisa_barra">
             <div class="row">

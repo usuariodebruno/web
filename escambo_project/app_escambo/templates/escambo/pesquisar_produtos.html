@@ -1,5 +1,3 @@
-
-
 {% extends 'escambo/base.html' %}
 {% load static %}
 
@@ -30,7 +28,7 @@
   {% endfor %}
 </div>
 {% else %}
-<p>desculpe mas não temos nenhum produto disponível</p>
+<p>desculpe você não tem produto disponível</p>
 {% endif %}
 <div class="d-flex" style="justify-content: center;">
   <a class="btn" href="{% url 'escambo:index' %}"

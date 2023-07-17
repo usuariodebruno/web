@@ -1,0 +1,19 @@
+.container-cesta {  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0% 0%;
+  grid-auto-flow: row dense;
+  grid-template-areas:
+    "cesta-vai itens-vai"
+    "cesta-vem itens-vem"
+}
+
+.cesta-vem { grid-area: cesta-vem; 
+}
+
+.itens-vem { grid-area: itens-vem; }
+
+.cesta-vai { grid-area: cesta-vai; }
+
+.itens-vai { grid-area: itens-vai; }
+
