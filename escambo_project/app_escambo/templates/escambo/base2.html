@@ -23,8 +23,9 @@
                         <nav class="a">
                             <ul>
                                 {% if user.is_authenticated %}
-                                <li><img src="{%static 'escambo/img/icons/meus_produtos.png' %}"
-                                        title="meus produtos"><br>meus produtos
+                                <li><a href="{% url 'escambo:meus_produtos'%}"><img
+                                    src="{%static 'escambo/img/icons/meus_produtos.png' %}"
+                                    title="meus produtos"><br>meus produtos</a>
                                 </li>
                                 <li><a href="{% url 'escambo:meus_escambos'%}">
                                     <img src="{% static 'escambo/img/icons/meus_escambo.png' %}"

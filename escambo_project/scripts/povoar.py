@@ -32,20 +32,20 @@ def create_escambadores():
         create_produtos(escambador)
 
 def create_produtos(escambador):
-    for _ in range(10):
+    for _ in range(40):
         nome = fake.word()
         descricao_afetiva = fake.text(max_nb_chars=500)
         estado_produto = fake.random_element(elements=('ruim', 'ok', 'bom', 'ótimo', 'excelente'))
         categoria = Categoria.objects.get(id= (random.randint(1 ,4 )))
         produto = Produto.objects.create(nome=nome, descricao_afetiva=descricao_afetiva, estado_produto=estado_produto, categoria=categoria, usuario_proprietario=escambador)
 
-        create_fotos(produto)
-
+        #create_fotos(produto)
+'''
 def create_fotos(produto):
     for _ in range(3):
-        imagem = None  # Preencha com o caminho da imagem se desejar
+        imagem = '/static/escambo/img/produto/produto_padrao_foto.png'  # Preencha com o caminho da imagem se desejar
         foto = Foto.objects.create(produto=produto, imagem=imagem)
-
+'''
 create_escambadores()
 
 print("-ESCAMBADORES CRIADOS \n-RODUTOS CRIADOS \n   - fotos para produtos criada")

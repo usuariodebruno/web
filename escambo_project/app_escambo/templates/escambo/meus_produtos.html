@@ -1,0 +1,42 @@
+{% extends 'escambo/base.html' %}
+{% load static %}
+
+{%block titulo %}<title>Pequisar Produto</title>{%endblock%}
+
+{% block conteudo %}
+<!-- PUBLICAÇÕES PARA A PESQUISA -->
+<div class="container">
+  <hr>
+  <h1> seus produtos</h1>
+  <h5> você tem {{ produtos|length }} produtos disponíveis</h5>
+  {% if produtos %}
+  <div class="container-postagem">
+    {% for produto in produtos %}
+    {% if forloop.counter <= 30 %} <div class="foto">
+      <a href="{% url 'escambo:detalhe_produto' produto.id %}">
+        {% if produto.foto_set.all %}
+        <img class="postagem" src="{{ produto.foto_set.first.imagem.url }}">
+        {% else %}
+        <img class="postagem" src="{% static 'escambo/img/produto/produto_padrao_foto.png' %}">
+        {% endif %}
+        <h4 style="margin-top: 7%;">{{ produto.nome }}</h4>
+        <small>por {{ produto.usuario_proprietario.user.username }}</small>
+        <p class="group inner list-group-item-text" style="width: 30vh; text-align: justify;">{{ produto.descricao_afetiva|truncatechars:150 }}</p>
+      </a>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+{% else %}
+<p>desculpe você não tem produto disponível</p>
+{% endif %}
+<div class="d-flex" style="justify-content: center;">
+  <a class="btn" href="{% url 'escambo:index' %}"
+    style="border-radius: 1em; margin-right: 5px; background-color: burlywood;">Voltar</a>
+  {% if produtos|length > 0 %}
+  <button type="submit" class="btn" id="buscar">próxima pagina</button>
+  {% endif %}
+</div>
+<hr>
+{% endblock %}
+</div>

@@ -143,36 +143,37 @@ def selecionar_produtos_cesta(request, *args, **kwargs):
         escambo.confirmado_usuario_iniciou = True
         escambo.save()
 
-        #
-        '''
-        escambos_usuario = Escambo.objects.filter(usuarios=escambador_logado).order_by('-id')
-        escambos_solicitados = Escambo.objects.exclude(usuario_iniciou=escambador_logado.id).filter(usuarios=escambador_logado)
-        
-        context = {
-            'meus_escambos': escambos_usuario,
-            'escambos_solicitados': escambos_solicitados,
-            
-        }
-        return render(request, 'escambo/meus_escambos.html', context ) 
-
-        '''
         return redirect('escambo:meus_escambos')
 
 @login_required(redirect_field_name='next', login_url="/login/")
 def meus_escambos(request): 
-    dao = escamboDao()     
+    dao = escamboDao()  
+
     escambador_logado = request.user.escambador
     escambos_usuario = Escambo.objects.filter(usuarios=escambador_logado)
     print(escambos_usuario)
     
+    #escambo iniciados por outra pessoa
     escambos_solicitados = Escambo.objects.exclude(usuario_iniciou=escambador_logado.id).filter(usuarios=escambador_logado)
     print(escambos_solicitados)
 
     escambos_usuario = escambos_usuario.exclude(id__in=escambos_solicitados.values_list('id', flat=True))
     print(escambos_usuario) 
+
+    #escambos_inativos
+    escambos_inativos = Escambo.objects.filter(usuarios=escambador_logado, escambo_ativo=False)
+
+    # Remover escambos inativos de escambos_usuario
+    escambos_usuario = escambos_usuario.exclude(id__in=escambos_inativos)
+
+    # Remover escambos inativos de escambos_solicitados
+    escambos_solicitados = escambos_solicitados.exclude(id__in=escambos_inativos)
+
+
     context = {
         'meus_escambos': escambos_usuario,
-        'escambos_solicitados': escambos_solicitados,        
+        'escambos_solicitados': escambos_solicitados,  
+        'escambos_inativos': escambos_inativos,      
     }
 
     return render(request, 'escambo/meus_escambos.html', context ) 
@@ -214,9 +215,19 @@ def finalizar_escambo(request, **kwargs):
             for produto in cesta.produto.all():
                 produto.status_trocado = True
                 produto.save()
-        return render(request, 'escambo_sucesso.html')    
+        return render(request, 'escambo/escambo_sucesso.html')    
     return HttpResponse("Erro ao finalizadar escambo!")
 
+def meus_produtos(request):  
+    dao = produtoDao()
+    p = dao.buscarProdutosUsuario(request.user.escambador)
+    context = {
+        'produtos': p
+    }
+
+    return render(request, 'escambo/meus_produtos.html', context)
+def teste(request):       
+        return render(request, 'escambo/escambo_sucesso.html') 
 #FAZER
 def login_view(request):  
     if request.method == 'POST':

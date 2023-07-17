@@ -23,15 +23,16 @@
                         <nav class="a">
                             <ul>
                                 {% if user.is_authenticated %}
-                                <li><img src="{%static 'escambo/img/icons/meus_produtos.png' %}"
-                                        title="meus produtos"><br>meus produtos
+                                <li><a href="{% url 'escambo:meus_produtos'%}"><img
+                                            src="{%static 'escambo/img/icons/meus_produtos.png' %}"
+                                            title="meus produtos"><br>meus produtos</a>
                                 </li>
                                 <li>
                                     <a href="{% url 'escambo:meus_escambos'%}">
                                         <img src="{% static 'escambo/img/icons/meus_escambo.png' %}"
                                             title="meus escambos"><br>meus escambos</a>
                                 </li>
-                                
+
                                 <li>
                                     <a href="{% url 'escambo:cadastrar_produto'%}">
                                         <img src="{% static 'escambo/img/icons/publica.png' %}"
@@ -267,9 +268,9 @@
         <div class="slogan">
             <h4>Vestuário com afeto</h4>
         </div>
-        
-         <!--BARRA DE PESQUISA -->
-         <div class="container-2" id="pesquisa_barra">
+
+        <!--BARRA DE PESQUISA -->
+        <div class="container-2" id="pesquisa_barra">
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
@@ -277,7 +278,8 @@
                             <div class="card m-auto" style="max-width: 80vh;">
                                 <div class="card-body"
                                     style="padding-right: 0px;padding-top: 0px;padding-bottom: 0px;padding-left: 0px;">
-                                    <form class="d-flex align-items-center" action="{% url 'escambo:pesquisar_produtos' %}" method="get">
+                                    <form class="d-flex align-items-center"
+                                        action="{% url 'escambo:pesquisar_produtos' %}" method="get">
                                         <input
                                             class="form-control form-control-lg flex-shrink-1 form-control-borderless"
                                             type="text" name="query" placeholder="busque 'camisa, 'tênis', 'brincos'"
@@ -313,7 +315,8 @@
                             <div class="card m-auto" style="max-width: 80vh;">
                                 <div class="card-body"
                                     style="padding-right: 0px;padding-top: 0px;padding-bottom: 0px;padding-left: 0px;">
-                                    <form class="d-flex align-items-center" action="{% url 'escambo:pesquisar_produtos' %}" method="get">
+                                    <form class="d-flex align-items-center"
+                                        action="{% url 'escambo:pesquisar_produtos' %}" method="get">
                                         <input
                                             class="form-control form-control-lg flex-shrink-1 form-control-borderless"
                                             type="text" name="query" placeholder="busque 'camisa, 'tênis', 'brincos'"

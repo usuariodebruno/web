@@ -18,7 +18,9 @@ urlpatterns = [
     path('selecionarTeste/<int:produto_id>/', views.selecionar_produtos_teste, name='selecionar_produtos_teste'),
     path('excluirProduto/<int:produto_id>', views.excluir_produto, name='excluir_produto'),
     path('finalizarEscambo/<int:escambo_id>', views.finalizar_escambo, name='finalizar_escambo'),
-    path('meusEscambos/', views.meus_escambos, name='meus_escambos'),
+    path('meusEscambos/', views.meus_escambos, name='meus_escambos'),    
+    path('meusProdutos/', views.meus_produtos, name='meus_produtos'),
+    path('teste/', views.teste, name='teste'),
 
  
     path('login/', views.login_view, name='login'),

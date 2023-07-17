@@ -7,19 +7,6 @@ from .models import *
 from .forms import *
     
 class produtoDao:
-    '''
-    #ORIGINAL
-    def cadastrarProduto(self, r, rfile):
-        form = ProdutoForm(r.POST, rfile)
-        if form.is_valid():
-            produto = form.save(commit=False)
-            escambador = Escambador.objects.get(user=r.user) 
-            produto.usuario_proprietario = escambador
-            # produto.usuario_proprietario = escambador  # Define o valor do campo 'usuario_proprietario' com o usuário logado
-            produto.save()
-            return self.save(form.cleaned_data, escambador)
-    '''   
-
     def cadastrarProduto(self, r, rfile):
         form = ProdutoForm(r.POST, rfile)
         if form.is_valid():
@@ -66,30 +53,6 @@ class produtoDao:
 
         return context
     
-    '''
-    #ORGINAL
-    def save(self, cleaned_data, escambador):
-        nome = cleaned_data['nome']
-        descricao_afetiva = cleaned_data['descricao_afetiva']
-        estado_produto = cleaned_data['estado_produto']
-        categoria = cleaned_data['categoria']
-
-        produto = Produto.objects.create(
-            nome=nome,
-            descricao_afetiva=descricao_afetiva,
-            estado_produto=estado_produto,
-            categoria=categoria,
-            usuario_proprietario=escambador,
-        )
-        
-        
-        for image in cleaned_data['fotos']:
-            Foto.objects.create(produto=produto, imagem=image)
-
-        return produto
-    '''
-
-    #FALSA
     def save(self, cleaned_data, escambador):
         nome = cleaned_data['nome']
         descricao_afetiva = cleaned_data['descricao_afetiva']
@@ -115,6 +78,10 @@ class produtoDao:
             Foto.objects.create(produto=produto, imagem=image)
 
         return produto
+    
+    def buscarProdutosUsuario(self, escambador):
+        produtos = Produto.objects.filter(usuario_proprietario=escambador)
+        return produtos
 
 class usuarioDao:
     def cadastrarUsuario(self, r, rfile):
@@ -191,29 +158,3 @@ class genericaDao:
 class cestaDao:
     def calcular_qnt_itens_escambo(self, cesta):
         return cesta.produto.count()
-""""
-
-class loginDao:
-    def login(self, r):
-        form = LoginForm(r, data=r.POST)        
-        if form.is_valid():
-            nome = form.cleaned_data['username']
-            senha = form.cleaned_data['password']
-            user = authenticate(request=r, username=nome, password=senha)
-            if user is not None:
-                return user
-        else:        
-            mensagem = messages.get_messages(r)
-            form = LoginForm()   
-            context = {
-                'mensagem': messages.error(r, 'Credenciais inválidas. Por favor, tente novamente.'),
-                'form': form
-            }
-            return context 
-                       
-    def pegarFormularioLimpo(self):
-        return LoginForm()
-    
-    def pegarFormularioSessao(self, r):
-        return LoginForm(r, data=r.POST)
-"""
