@@ -208,14 +208,15 @@
             <table class="table table-borderless">
                 <thead>
                     <tr>
-                        <th scope="col">ver</th>
+                        <th scope="col">ver</th>                        
+                        <th scope="col">escamob_id</th>
                         <th scope="col">qnt. itens</th>
                         <th scope="col">usuario</th>
                         <th scope="col">status escambo</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% if meus_escambos%}
+                    {% if escambos_inativos%}
                     {% for escambo in escambos_inativos %}
                     <tr>
                         <th scope="col">
@@ -227,6 +228,7 @@
                                 </svg>
                             </a>
                         </th>
+                        <th scope="row"> {{escambo.id}} </th>
                         <th scope="row"> {{escambo.qnt_itens}} </th>
                         {% for usuario in escambo.usuarios.all %}
                         {% if usuario.user != request.user %}

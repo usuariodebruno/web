@@ -49,7 +49,7 @@
             <!-- BTN'S -->
             {%if produto.usuario_proprietario != request.user.escambador%}
                 <div class="d-flex flex-row align-items-center">
-                    <form action="{% url 'escambo:selecionar_produtos_teste' produto.id %}" method="POST">
+                    <form action="{% url 'escambo:selecionar_produtos' produto.id %}" method="POST">
                         {% csrf_token %}
                         <button type="submit" class="btn" style="margin-top: 2em; margin-right: 1em;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"

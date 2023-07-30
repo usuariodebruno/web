@@ -101,7 +101,7 @@
                 <div class="col-sm">
                     <h2>escambador {{ request.user.username }}</h2>
                     <form id="selecionar-produtos-form" method="POST"
-                    action="{% url 'escambo:selecionar_produtos_cesta' produto.id %}">
+                    action="{% url 'escambo:abrir_escambo' produto.id %}">
                         {% csrf_token %}
                         <table class="table table-borderless">
                             <thead>

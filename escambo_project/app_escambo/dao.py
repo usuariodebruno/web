@@ -1,7 +1,5 @@
-from django.contrib import messages
+
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from random import shuffle
 from django import forms
 from .models import *
 from .forms import *
@@ -16,7 +14,19 @@ class produtoDao:
             # produto.usuario_proprietario = escambador  # Define o valor do campo 'usuario_proprietario' com o usuário logado
             #produto.save()
             return self.save(form.cleaned_data, escambador)
-    
+        
+    def listarProdutosCategorias(self):        
+        produtos = Produto.objects.exclude(status_trocado=True).order_by('-id')
+        categorias = Categoria.objects.all()
+        destaques = Produto.objects.filter(destaque=True).order_by('-id')
+        
+        context = { 
+            'produtos': produtos,
+            'categorias': categorias,
+            'destaques': destaques
+        }
+
+        return context
     def detalharProduto(self, id_produto):
         produto = Produto.objects.get(id=id_produto)
         dao = categoriaDao()
@@ -111,17 +121,18 @@ class usuarioDao:
         )
 
         return escambador
-class escamboDao:
-    def criar_escambo(self, cesta1 ,cesta2):
-        escambo = Escambo()
-        escambo.cestas.add(cesta1)
-        escambo.cestas.add(cesta2)
 
-        # Associa os usuários ao escambo
-        escambo.usuarios.add(cesta1.escambador_dono)
-        escambo.usuarios.add(cesta2.escambador_dono)
-        
-        # Salve o escambo no banco de dados
+class escamboDao:
+    def criar_escambo(self, logado,  c1 ,c2):
+        escambo = Escambo.objects.create(escambo_ativo=True, usuario_iniciou= logado.id) # Criar escambo
+
+        escambo.cestas.add(c1, c2) # Adicionar as cestas ao escambo
+
+        #dao = cestaDao()
+        escambo.qnt_itens = (c1.produto.count()) + (c2.produto.count())
+
+        escambo.usuarios.add(c1.escambador_dono, c2.escambador_dono)
+        escambo.confirmado_usuario_iniciou = True
         escambo.save()
     
     def calcular_qnt_itens_escambo(self, escambo):
@@ -136,25 +147,23 @@ class escamboDao:
     def todos_confirmados(self, escambo):
         return escambo.confirmado_usuario_iniciou and escambo.confirmado_usuario_outro
 
-
 class categoriaDao:
     def buscarCategorias(self):
         return Categoria.objects.all()     
-    
-class genericaDao:
-    def listarProdutosCategorias(self):        
-        produtos = Produto.objects.exclude(status_trocado=True).order_by('-id')
-        categorias = Categoria.objects.all()
-        destaques = Produto.objects.filter(destaque=True).order_by('-id')
-        
-        context = { 
-            'produtos': produtos,
-            'categorias': categorias,
-            'destaques': destaques
-        }
-
-        return context
 
 class cestaDao:
     def calcular_qnt_itens_escambo(self, cesta):
         return cesta.produto.count()
+
+    def criar_cesta(self, escabador, produtos):
+        cesta = Cesta.objects.create(escambador_dono=escabador) # Criar cesta
+
+        if isinstance(produtos, list): # Verificar se produtos é uma lista 
+            for p in produtos:
+                cesta.produto.add(p)
+            cesta.save()
+        else:
+            cesta.produto.add(produtos)
+            cesta.save()
+
+        return cesta 
